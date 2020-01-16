@@ -1,0 +1,45 @@
+https://docs.microsoft.com/en-us/azure/container-instances/container-instances-quickstart
+
+# Create a resource group
+az group create \
+	--location westus \
+	--name myResourceGroup
+
+# Create a container	
+az container create \
+	--resource-group myResourceGroup \
+	--name mycontainer \
+	--image microsoft/aci-helloworld \
+	--dns-name-label aci-demo \
+	--ports 80	
+	--ip-address public
+
+# View container
+az container show 
+	--resource-group myResourceGroup \
+	--name mycontainer \
+	--query "{FQDN:ipAddress.fqdn,ProvisioningState:provisioningState}" \
+	--out table	
+
+# View contents of container 
+# Ya da yukarıdan dns gelcek onunla bas
+curl publicIpAddress
+
+# Pull the container logs
+az container logs \
+	--resource-group myResourceGroup \
+	--name mycontainer
+
+# Clean up resources	
+az container delete \
+	--resource-group myResourceGroup \
+	--name mycontainer
+az container list \
+	--resource-group myResourceGroup \
+	--output table
+az group delete \
+	--name myResourceGroup
+	
+	
+	
+	

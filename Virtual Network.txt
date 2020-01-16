@@ -1,0 +1,36 @@
+https://docs.microsoft.com/en-us/azure/virtual-network/quick-create-cli
+
+# Create a resource group
+az group create --name myResourceGroup --location eastus
+
+# *** Create a virtual network
+az network vnet create \
+  --name myVirtualNetwork \
+  --resource-group myResourceGroup \
+  --subnet-name default
+
+# *** Create the first VM  
+az vm create \
+  --resource-group myResourceGroup \
+  --name myVm1 \
+  --image UbuntuLTS \
+  --generate-ssh-keys \
+  --no-wait
+
+# Create the second VM
+az vm create \
+  --resource-group myResourceGroup \
+  --name myVm2 \
+  --image UbuntuLTS \
+  --generate-ssh-keys
+  
+# Take note of the publicIpAddress. You will use this address to connect to the VM from the internet in the next step.
+
+# Connect to a VM from the internet
+ssh <publicIpAddress>
+
+# Communicate between VMs
+ping myVm1 -c 4
+
+# Clean up resources
+az group delete --name myResourceGroup --yes

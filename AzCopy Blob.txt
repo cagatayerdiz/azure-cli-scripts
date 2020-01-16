@@ -1,0 +1,89 @@
+https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy
+
+# Download a single blob
+AzCopy /Source:https://myaccount.blob.core.windows.net/mycontainer 
+	   /Dest:C:\myfolder 
+	   /SourceKey:key 
+	   /Pattern:"abc.txt"
+
+# Download a single blob from the secondary region
+AzCopy /Source:https://myaccount-secondary.blob.core.windows.net/mynewcontainer 
+	   /Dest:C:\myfolder 
+	   /SourceKey:key 
+	   /Pattern:"abc.txt"
+
+# Download all blobs in a container
+AzCopy /Source:https://myaccount.blob.core.windows.net/mycontainer 
+	   /Dest:C:\myfolder 
+	   /SourceKey:key 
+	   /S
+
+# Download blobs with a specific prefix	   
+AzCopy /Source:https://myaccount.blob.core.windows.net/mycontainer 
+	   /Dest:C:\myfolder 
+	   /SourceKey:key 
+	   /Pattern:a 
+	   /S
+
+# Upload a single blob
+AzCopy /Source:C:\myfolder 
+	   /Dest:https://myaccount.blob.core.windows.net/mycontainer 
+	   /DestKey:key 
+	   /Pattern:"abc.txt"	   
+
+# Upload a single blob to a virtual directory
+AzCopy /Source:C:\myfolder 
+	   /Dest:https://myaccount.blob.core.windows.net/mycontainer/vd 
+	   /DestKey:key 
+	   /Pattern:abc.txt
+	   
+# Upload all blobs in a folder
+AzCopy /Source:C:\myfolder 
+	   /Dest:https://myaccount.blob.core.windows.net/mycontainer 
+	   /DestKey:key 
+	   /S	   
+	   
+# Upload blobs matching a specific pattern	   
+AzCopy /Source:C:\myfolder 
+	   /Dest:https://myaccount.blob.core.windows.net/mycontainer 
+	   /DestKey:key 
+	   /Pattern:a* 
+	   /S
+
+# If you do not specify option /S, AzCopy only uploads blobs that don't reside in a virtual directory
+
+# Copy a single blob from one container to another within the same storage account
+AzCopy /Source:https://myaccount.blob.core.windows.net/mycontainer1 
+	   /Dest:https://myaccount.blob.core.windows.net/mycontainer2 
+	   /SourceKey:key 
+	   /DestKey:key 
+	   /Pattern:abc.txt
+
+# *** Copy a single blob from one storage account to another
+AzCopy /Source:https://sourceaccount.blob.core.windows.net/mycontainer1 
+	   /Dest:https://destaccount.blob.core.windows.net/mycontainer2 
+	   /SourceKey:key1 
+	   /DestKey:key2 
+	   /Pattern:abc.txt
+
+# Copy a single blob from the secondary region to the primary region 
+AzCopy /Source:https://myaccount1-secondary.blob.core.windows.net/mynewcontainer1 
+	   /Dest:https://myaccount2.blob.core.windows.net/mynewcontainer2 
+	   /SourceKey:key1 
+	   /DestKey:key2 
+	   /Pattern:abc.txt
+	   
+# Copy a single blob and its snapshots from one storage account to another
+AzCopy /Source:https://sourceaccount.blob.core.windows.net/mycontainer1 
+	   /Dest:https://destaccount.blob.core.windows.net/mycontainer2 
+	   /SourceKey:key1 
+	   /DestKey:key2 
+	   /Pattern:abc.txt 
+	   /Snapshot
+	   
+# *** Copy all blobs in a container to another storage account
+AzCopy /Source:https://sourceaccount.blob.core.windows.net/mycontainer1 
+	   /Dest:https://destaccount.blob.core.windows.net/mycontainer2 
+	   /SourceKey:key1 
+	   /DestKey:key2 
+	   /S   

@@ -1,0 +1,89 @@
+https://docs.microsoft.com/en-us/azure/storage/common/storage-azure-cli
+
+# *** Create a new storage account
+az storage account create \
+    --location <location> \
+    --name <account_name> \
+    --resource-group <resource_group> \
+    --sku <account_sku>
+	
+--location [Required]: Location. For example, "West US".
+--name [Required]: The storage account name. The name must be 3 to 24 characters in length, and use only lowercase alphanumeric characters.
+--resource-group [Required]: Name of resource group.
+--sku [Required]: The storage account SKU. Allowed values:
+Premium_LRS
+Standard_GRS
+Standard_LRS
+Standard_RAGRS
+Standard_ZRS
+	
+az storage account create \
+    --resource-group cagatay-resource-group \
+    --name az200funcstorage \
+    --location eastus2 \
+    --sku Standard_LRS	
+
+# Show connection string
+az storage account show-connection-string \
+    --name <account_name> \
+    --resource-group <resource_group>
+	
+# Create a container
+az storage container create --name <container_name>
+
+# Upload a blob to a container
+az storage blob upload \
+    --file <local_file_path> \
+    --container-name <container_name> \
+    --name <blob_name>
+
+# Download a blob from a container
+az storage blob download \
+    --container-name mycontainer \
+    --name myblob.png \
+    --file ~/mydownloadedblob.png
+
+# List the blobs in a container
+az storage blob list \
+    --container-name mycontainer \
+    --output table
+
+# Create a file share
+az storage share create --name myshare
+
+# Create a directory
+az storage directory create \
+	--name myDir \
+	--share-name myshare
+
+# Upload a local file to a share
+az storage file upload \
+	--share-name myshare \
+	--source ~/temp/samplefile.txt
+
+# Upload a local file to a share folder					   
+az storage file upload \
+	--share-name myshare/myDir \
+	--source ~/temp/samplefile.txt
+
+# List the files in the root of a share
+az storage file list \
+	--share-name myshare \
+	--output table
+
+# List the files in a directory within a share
+az storage file list \
+	--share-name myshare/myDir \
+	--output table
+
+# List the files in a path within a share
+az storage file list \
+	--share-name myshare \
+	--path myDir/mySubDir/MySubDir2 \
+	--output table
+
+# Create share snapshot 
+az storage share snapshot -n <share name>
+
+# List share snapshots
+az storage share list --include-snapshots

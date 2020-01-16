@@ -1,0 +1,48 @@
+https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough
+
+# Create a resource group
+az group create \
+	--name myAKSCluster \
+	--location eastus
+
+# Install aks	
+az aks install-cli		
+	
+# Create AKS cluster
+az aks create \
+	--resource-group myAKSCluster \
+	--name myAKSCluster \
+	--node-count 1 \
+	--enable-addons monitoring \
+	--generate-ssh-keys
+
+# List AKS clusters 
+az aks list -o table
+
+# Upgrade AKS cluster
+az aks upgrade \
+	-g myResourceGroup \
+	-n myAKSCluster \
+	--kubernetes-version 1.8.1
+
+# Get credentials (connect to aks)
+az aks get-credentials --resource-group myAKSCluster --name myAKSCluster
+
+# Get nodes
+kubectl get nodes
+
+# Run the application
+# Create a file named azure-vote.yaml then apply
+kubectl apply -f azure-vote.yaml
+
+# Test the application
+kubectl get service
+kubectl get service azure-vote-front --watch
+
+# Browse to the external IP address to see the Azure Vote App.
+
+# Browse to kubernetes dashboard (will prompt to web server)
+az aks browse --name MyManagedCluster --resource-group MyResourceGroup
+
+# Delete cluster
+az group delete --name myAKSCluster --yes --no-wait

@@ -1,0 +1,32 @@
+https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy
+   
+# *** Export a table	   
+AzCopy /Source:https://myaccount.table.core.windows.net/myTable/ 
+	   /Dest:C:\myfolder\ 
+	   /SourceKey:key
+
+# Split an export from Table storage into multiple files
+AzCopy /Source:https://myaccount.table.core.windows.net/mytable/ 
+       /Dest:C:\myfolder 
+       /SourceKey:key 
+       /S 
+       /SplitSize:100
+
+# Export a table to JSON or CSV data file format
+AzCopy /Source:https://myaccount.table.core.windows.net/myTable/ 
+	   /Dest:C:\myfolder\ 
+	   /SourceKey:key 
+	   /PayloadFormat:CSV
+
+# Export a table to Blob storage
+AzCopy /Source:https://myaccount.table.core.windows.net/myTable/ 
+	   /Dest:https://myaccount.blob.core.windows.net/mycontainer/ 
+	   /SourceKey:key1 
+	   /Destkey:key2
+
+# Import a table
+AzCopy /Source:C:\myfolder\ 
+	   /Dest:https://myaccount.table.core.windows.net/mytable1/ 
+	   /DestKey:key 
+	   /Manifest:"myaccount_mytable_20140103T112020.manifest" 
+	   /EntityOperation:InsertOrReplace

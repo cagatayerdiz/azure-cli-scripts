@@ -1,0 +1,22 @@
+az group create
+	--name "ContosoResourceGroup"
+	--location eastus
+
+az keyvault create
+	--name "Contoso-Vault2"
+	-- resource-group "ContosoResourceGroup"
+	--location eastus
+
+# https://contoso-vault2.vault.azure.net/
+
+az keyvault secret set 
+	--vault-name "Contoso-Vault2"
+	--name  "ExamplePassword"
+	--value "hVFkk965BuUv"
+
+az keyvault secret show 
+	--name "ExamplePassword"
+	--vault-name "Contoso-Vault2"
+
+az keyvault delete
+	--name "Contoso-Vault2"

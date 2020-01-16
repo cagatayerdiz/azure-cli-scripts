@@ -1,0 +1,84 @@
+https://docs.microsoft.com/en-us/azure/virtual-machines/windows/tutorial-manage-vm
+
+# Create resource group
+New-AzResourceGroup `
+   -ResourceGroupName "myResourceGroupVM" `
+   -Location "EastUS"
+
+# Create a VM
+$cred = Get-Credential
+New-AzVm `
+    -ResourceGroupName "myResourceGroupVM" `
+    -Name "myVM" `
+    -Location "EastUS" `
+    -VirtualNetworkName "myVnet" `
+    -SubnetName "mySubnet" `
+    -SecurityGroupName "myNetworkSecurityGroup" `
+    -PublicIpAddressName "myPublicIpAddress" `
+    -Credential $cred
+
+# Connect to VM    
+Get-AzPublicIpAddress `
+   -ResourceGroupName "myResourceGroupVM"  | Select IpAddress
+
+# Rdp Connection   
+mstsc /v:<publicIpAddress>
+
+# List of image publishers
+Get-AzVMImagePublisher -Location "EastUS"
+
+# List of image offers
+Get-AzVMImageOffer `
+   -Location "EastUS" `
+   -PublisherName "MicrosoftWindowsServer"
+
+# List of image names - windows server offerına ait skular (imageleri) listeler
+Get-AzVMImageSku `
+   -Location "EastUS" `
+   -PublisherName "MicrosoftWindowsServer" `
+   -Offer "WindowsServer"
+
+# Deploy a VM with a specific image. AsJob creates VM as a background task
+New-AzVm `
+    -ResourceGroupName "myResourceGroupVM" `
+    -Name "myVM2" `
+    -Location "EastUS" `
+    -VirtualNetworkName "myVnet" `
+    -SubnetName "mySubnet" `
+    -SecurityGroupName "myNetworkSecurityGroup" `
+    -PublicIpAddressName "myPublicIpAddress2" `
+    -ImageName "MicrosoftWindowsServer:WindowsServer:2016-Datacenter-with-Containers:latest" `
+    -Credential $cred `
+    -AsJob   
+
+# List available VM sizes
+Get-AzVMSize -Location "EastUS"
+
+# Resize a VM - VM needs to be deallocated. Public IP address will change unless a static IP address is being used.
+Stop-AzVM `
+   -ResourceGroupName "myResourceGroupVM" `
+   -Name "myVM" -Force
+$vm = Get-AzVM `
+   -ResourceGroupName "myResourceGroupVM"  `
+   -VMName "myVM"
+$vm.HardwareProfile.VmSize = "Standard_E2s_v3"
+Update-AzVM -VM $vm `
+   -ResourceGroupName "myResourceGroupVM"
+Start-AzVM `
+   -ResourceGroupName "myResourceGroupVM"  `
+   -Name $vm.name
+
+# Stop a VM
+Stop-AzVM `
+   -ResourceGroupName "myResourceGroupVM" `
+   -Name "myVM" -Force
+
+# Start a VM
+Start-AzVM `
+   -ResourceGroupName "myResourceGroupVM" `
+   -Name "myVM"      
+
+# Delete resource group
+Remove-AzResourceGroup `
+   -Name "myResourceGroupVM" `
+   -Force   
